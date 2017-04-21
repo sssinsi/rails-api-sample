@@ -1,0 +1,33 @@
+version: '2'
+services:
+  api:
+    build: .
+    command: bundle exec unicorn -p 3000 -c config/unicorn.rb
+    ports:
+      - '3000:3000'
+    environment:
+      RAILS_ENV: development
+      MYSQL_ROOT_PASSWORD: root
+      DATABASE_URL:
+    volumes:
+      - ./rails-api:/myapp
+    links:
+      - db
+  nginx:
+    build: containers/nginx
+    ports:
+      - '80:80'
+    volumes:
+      - ./containers_data/nginx:/var/log/nginx
+    links:
+      - api
+  db:
+    image: mysql:5.7.18
+    environment:
+      MYSQL_DATABASE: local
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./containers_data/mysql:/var/lib/mysql
+      

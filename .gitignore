@@ -40,3 +40,7 @@ bower.json
 
 # Ignore Byebug command history file.
 .byebug_history
+
+/containers_data/*
+!/containers_data/mysql/.keep
+!/containers_data/nginx/.keep
